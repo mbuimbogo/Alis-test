@@ -18,12 +18,41 @@ export const useProductStore = defineStore('products', {
           throw new Error('Failed to fetch products');
         }
         this.products = await response.json();
+
       } catch (error) {
         this.setError(error);
       } finally {
         this.isLoading = false;
       }
     },
+
+    async deleteProduct(productId) {
+      if (!productId) {
+        throw new Error('Product ID is required');
+      }
+
+      this.isLoading = true;
+      try {
+        const response = await fetch(`https://dummyjson.com/products/${productId}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete product');
+        }
+
+        // Remove the deleted product from the local state
+        this.products = this.products.filter(product => product.id !== productId);
+
+        return true;
+      } catch (error) {
+        console.error(`Failed to delete product with ID: ${productId}`, error);
+        this.setError(error);
+        return false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+  
 
     async getProductById(productId) {
       if (!productId) {
@@ -54,8 +83,6 @@ export const useProductStore = defineStore('products', {
         this.isLoading = false;
       }
     },
-
-    // filtering, deleting, etc.
 
     setError(error) {
       this.error = error;
