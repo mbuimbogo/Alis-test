@@ -3,84 +3,70 @@
   import { Ref, ref, onMounted, computed } from 'vue';
   import { useProductStore } from '../../stores/ProductsStore';
   import { useRouter } from 'vue-router';
-  import { debounce } from 'lodash';
-
+  import { debounce } from 'vue-debounce'
 
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
-import { watch } from 'vue';
+  import { watch } from 'vue';
 
   const store = useProductStore();
   const router = useRouter();
-  const searchQuery = ref("");
+  const searchQuery = ref('');
   const currentPage = ref(1);
   const itemsPerPage = 8;
-
-  
-  // Refs
-  // const loading: Ref<boolean> = ref(false);
+  const selectedCategory = ref('');
 
   // onMounted
   // fetch products on component mount
-  onMounted(()=> {
+  onMounted(() => {
     store.fetchProducts();
-  })
-
-  // onMounted(async () => {
-  //   loading.value = true;
-
-  //   setTimeout(() => (loading.value = false), 3000);
-
-  //   fetch('https://dummyjson.com/products')
-  //     .then((res) => res.json())
-  //     .then((json) => console.log(json));
-  // });
+  });
 
   const debouncedSearch = debounce((value: string) => {
-  searchQuery.value = value;
-}, 300);
+    searchQuery.value = value;
+  }, 3000);
 
-// Watch for changes in the search query and debounce updates
-watch(searchQuery, (newValue: string) => {
-  debouncedSearch(newValue);
-});
-
+  // Watch for changes in the search query and debounce updates
+  watch(searchQuery, (newValue: string) => {
+    debouncedSearch(newValue);
+  });
 
   const viewProductDetails = (productId) => {
-    router.push({ name: 'Resource', params: { resourceId: productId }});
+    router.push({ name: 'Resource', params: { resourceId: productId } });
+  };
 
-  }
+  const filteredProducts = computed(() => {
+    if (!store.products.products) {
+      return [];
+    }
 
-  // Filter products based on search query
-// const filteredProducts = computed(() => {
-//   const query = searchQuery.value.toLowerCase();
-//   return store.products.products.filter(product => 
-//     product.title.toLowerCase().includes(query) ||
-//     product.brand.toLowerCase().includes(query)
-//   );
-// });
-const filteredProducts = computed(() => {
-  if (!store.products.products){
-    return [];
-  }
+    const query = searchQuery.value.toLowerCase();
+    const startIndex = (currentPage.value - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
 
-  const query = searchQuery.value.toLowerCase();
-  const startIndex = (currentPage.value - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  return store.products.products
-    .filter(product => 
-      product.title.toLowerCase().includes(query) ||
-      product.brand.toLowerCase().includes(query)
-    )
-    .slice(startIndex, endIndex);
-});
-
+    // Filter by search query and selected category
+    return store.products.products
+      .filter(
+        (product) =>
+          (product.title.toLowerCase().includes(query) ||
+            product.brand.toLowerCase().includes(query)) &&
+          (!selectedCategory.value ||
+            product.category === selectedCategory.value),
+      )
+      .slice(startIndex, endIndex);
+  });
 
   const changePage = (page: number) => {
     currentPage.value = page;
   };
 
+  const getUniqueCategories = () => {
+    const categories = new Set(); // Use Set to store unique categories
+    store.products.products.forEach((product) =>
+      categories.add(product.category),
+    );
+    return Array.from(categories); // Convert Set to array
+  };
 </script>
 
 <template>
@@ -106,26 +92,29 @@ const filteredProducts = computed(() => {
       </v-col>
     </v-row>
     <v-row class="pb-4 px-lg-14 px-md-10 px-6">
-      <v-col lg="4" >
-        <v-text-field v-model="searchQuery" label="Search" outlined dense></v-text-field>
+      <v-col cols="12" sm="8" lg="4">
+        <v-text-field
+          v-model="searchQuery"
+          v-devounce:3000ms="debouncedSearch"
+          label="Search"
+          outlined
+          dense
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="4" lg="2">
+        <v-select
+          v-model="selectedCategory"
+          :items="getUniqueCategories()"
+          label="Select Category"
+          outlined
+          dense
+        ></v-select>
       </v-col>
     </v-row>
-    <!-- <v-row class="w-100 mt-6 pb-4 px-lg-14 px-md-10 px-6">
-      <v-col
-        cols="12"
-        sm="12"
-        lg="12"
-        class="text-body"
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </v-col>
+    <!-- <v-row class="pb-4 px-lg-14 px-md-10 px-6">
+      
     </v-row> -->
+
     <v-row class="overflow-auto px-lg-14 px-md-10 px-16 text-center">
       <template v-if="store.isLoading">
         <v-progress-linear
@@ -134,41 +123,48 @@ const filteredProducts = computed(() => {
           indeterminate
         />
       </template>
-      <template v-else> 
-        <v-col 
-        v-for="product in (filteredProducts || store.products.products)"
-        :key="product.title"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
-        @click="viewProductDetails(product.id)"
+      <template v-else>
+        <v-col
+          v-for="product in filteredProducts || store.products.products"
+          :key="product.title"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+          @click="viewProductDetails(product.id)"
         >
-        <v-card>
-          <v-img :src="product.thumbnail" height="200px" />
-          <div class="text-title">{{ product.title }}</div>
-          <v-card-subtitle>{{ product.brand }}</v-card-subtitle>
-          <v-card-text>${{ product.price }}</v-card-text>
-          <v-card-actions>
-            <v-btn text="Close" @click="viewProductDetails(product.id)">View Details</v-btn>
-          </v-card-actions>
-        </v-card>
-          
+          <v-card>
+            <v-img
+              :src="product.thumbnail"
+              height="200px"
+            />
+            <div class="text-title">{{ product.title }}</div>
+            <v-card-subtitle>{{ product.brand }}</v-card-subtitle>
+            <v-card-text>${{ product.price }}</v-card-text>
+            <v-card-actions>
+              <v-btn
+                text="Close"
+                @click="viewProductDetails(product.id)"
+                >View Details</v-btn
+              >
+            </v-card-actions>
+          </v-card>
         </v-col>
       </template>
     </v-row>
- <!-- Pagination -->
-<v-row class="px-lg-14 px-md-10 px-6 justify-center" v-if="store.products.products">
-  <v-pagination
-    v-model="currentPage"
-    :length="Math.ceil(store.products.products.length / itemsPerPage)"
-    @input="changePage"
-    color="primary"
-  ></v-pagination>
-</v-row>
-
+    <!-- Pagination -->
+    <v-row
+      class="px-lg-14 px-md-10 px-6 justify-center"
+      v-if="store.products.products"
+    >
+      <v-pagination
+        v-model="currentPage"
+        :length="Math.ceil(store.products.products.length / itemsPerPage)"
+        @input="changePage"
+        color="primary"
+      ></v-pagination>
+    </v-row>
   </v-container>
 </template>
 
 <style scoped lang="scss"></style>
-
