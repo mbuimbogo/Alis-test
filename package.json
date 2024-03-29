@@ -1,0 +1,42 @@
+{
+  "name": "console",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "add_linting": "npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript eslint-config-prettier eslint-config-standard eslint-plugin-prettier eslint-plugin-vue eslint-plugin-vuetify prettier @vue/eslint-config-prettier @vue/eslint-config-typescript @vue/tsconfig",
+    "serve": "vite preview",
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mdi/font": "7.4.47",
+    "@vue/tsconfig": "^0.5.1",
+    "google-protobuf": "^3.21.2",
+    "grpc-web": "^1.5.0",
+    "lodash": "^4.17.21",
+    "material-design-icons-iconfont": "^6.7.0",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "roboto-fontface": "^0.10.0",
+    "uuid": "^9.0.1",
+    "vue": "^3.4.18",
+    "vue-debounce": "^5.0.0",
+    "vue-router": "^4.2.5",
+    "vuetify": "^3.5.3",
+    "webfontloader": "^1.6.28"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.15.12",
+    "@types/webfontloader": "^1.6.38",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "sass": "^1.70.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-vuetify": "^2.0.1",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.27",
+    "vuetify": "^3.5.3"
+  }
+}
