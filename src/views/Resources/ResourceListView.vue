@@ -46,7 +46,7 @@ watch(searchQuery, (newValue: string) => {
 });
 
 
-  const viewProductDetails = (productId: number) => {
+  const viewProductDetails = (productId) => {
     router.push({ name: 'Resource', params: { resourceId: productId }});
 
   }
@@ -137,7 +137,7 @@ const filteredProducts = computed(() => {
       <template v-else> 
         <v-col 
         v-for="product in (filteredProducts || store.products.products)"
-        :key="product.id"
+        :key="product.title"
         cols="12"
         sm="6"
         md="4"
@@ -158,7 +158,7 @@ const filteredProducts = computed(() => {
       </template>
     </v-row>
  <!-- Pagination -->
-<v-row class="px-lg-14 px-md-10 px-6 justify-center">
+<v-row class="px-lg-14 px-md-10 px-6 justify-center" v-if="store.products.products">
   <v-pagination
     v-model="currentPage"
     :length="Math.ceil(store.products.products.length / itemsPerPage)"
