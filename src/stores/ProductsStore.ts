@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
 
-
 export const useProductStore = defineStore('products', {
   state: () => ({
-    products: [],
+    products: { products: []},
     isLoading: false,
     error: null,
   }),
@@ -17,7 +16,8 @@ export const useProductStore = defineStore('products', {
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
-        this.products = await response.json();
+
+        this.products = await response.json()
 
       } catch (error) {
         this.setError(error);
@@ -59,7 +59,7 @@ export const useProductStore = defineStore('products', {
         throw new Error('Product ID is required');
       }
 
-      const existingProduct = this.products.find((p) => p.id === productId);
+      const existingProduct = this.products.products.find((p) => p.id === productId);
       if (existingProduct) {
         return existingProduct;
       }
@@ -72,7 +72,10 @@ export const useProductStore = defineStore('products', {
         }
         const product = await response.json();
         
-        const updatedProducts = [...this.products, product];
+        const updatedProducts = {
+          ...this.products,
+          products: [ ...this.products.products, product]
+        };
         this.products = updatedProducts;
 
         return product;

@@ -60,7 +60,7 @@ watch(searchQuery, (newValue: string) => {
 //   );
 // });
 const filteredProducts = computed(() => {
-  if (!store.products.products) {
+  if (!store.products.products){
     return [];
   }
 
