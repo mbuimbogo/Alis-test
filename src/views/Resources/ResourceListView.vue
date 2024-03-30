@@ -61,12 +61,17 @@
   };
 
   const getUniqueCategories = () => {
-    const categories = new Set(); // Use Set to store unique categories
+    // Use Set to store unique categories
+  const categories = new Set(); 
+  if (store.products.products) {
     store.products.products.forEach((product) =>
       categories.add(product.category),
     );
-    return Array.from(categories); // Convert Set to array
-  };
+  }
+  // Convert Set to array
+  return Array.from(categories); 
+};
+
 </script>
 
 <template>

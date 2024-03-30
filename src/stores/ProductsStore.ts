@@ -41,7 +41,7 @@ export const useProductStore = defineStore('products', {
         }
 
         // Remove the deleted product from the local state
-        this.products = this.products.filter(product => product.id !== productId);
+        this.products = this.products.products.filter(product => product.id !== productId);
 
         return true;
       } catch (error) {
