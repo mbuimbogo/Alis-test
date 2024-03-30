@@ -1,7 +1,7 @@
 
 <template>
-  <v-container
-    class="h-100 overflow-auto"
+  <v-card
+    class="h-100 md:h-70 w-100 overflow-y-auto justify-center align-center"
     fluid
   >
     <template v-if="loading">
@@ -13,7 +13,7 @@
         ></v-progress-circular>
       </v-row>
     </template>
-    <template v-else>
+    <template v-else >
       <!-- Product details section -->
       <v-row class="py-3 pt-8 px-lg-10 px-md-6 px-2">
         <!-- Back button -->
@@ -27,7 +27,7 @@
         <!-- Resource title -->
         <div class="text-headline">{{ resourceTitle }}</div>
       </v-row>
-      <v-row v-if="product">
+      <v-row v-if="product" class="d-flex justify-center align-center h-100">
         <!-- Product details -->
         <v-col
           cols="12"
@@ -64,7 +64,7 @@
       ></v-rating>
           <h1 class="mb-4">{{ product.title }}</h1> 
 
-          <p class="mb-4">Description: {{ product.description }}</p>
+          <p class="mb-4 ">Description: {{ product.description }}</p>
           <p class="mb-4">Discount: {{ product.discountPercentage }}%</p>
           <p class="mb-4">Category: {{ product.category }}</p>
           <p class="mb-4">Brand:{{ product.brand }}</p>
@@ -76,7 +76,7 @@
       </v-row>
     </template>
 
-  </v-container>
+  </v-card>
 </template>
 
 <script setup lang="ts">
