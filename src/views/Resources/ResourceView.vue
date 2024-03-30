@@ -1,4 +1,3 @@
-
 <template>
   <v-card
     class="h-100 md:h-70 w-100 overflow-y-auto justify-center align-center"
@@ -13,7 +12,7 @@
         ></v-progress-circular>
       </v-row>
     </template>
-    <template v-else >
+    <template v-else>
       <!-- Product details section -->
       <v-row class="py-3 pt-8 px-lg-10 px-md-6 px-2">
         <!-- Back button -->
@@ -27,7 +26,10 @@
         <!-- Resource title -->
         <div class="text-headline">{{ resourceTitle }}</div>
       </v-row>
-      <v-row v-if="product" class="d-flex justify-center align-center h-100">
+      <v-row
+        v-if="product"
+        class="d-flex justify-center align-center h-100"
+      >
         <!-- Product details -->
         <v-col
           cols="12"
@@ -55,27 +57,30 @@
           cols="12"
           md="6"
         >
-        <v-rating
-        v-model="product.rating"
-        :half-increments="true"
-        readonly
-        color="yellow"
-        background-color="grey lighten-2"
-      ></v-rating>
-          <h1 class="mb-4">{{ product.title }}</h1> 
+          <v-rating
+            v-model="product.rating"
+            :half-increments="true"
+            readonly
+            color="yellow"
+            background-color="grey lighten-2"
+          ></v-rating>
+          <h1 class="mb-4">{{ product.title }}</h1>
 
-          <p class="mb-4 ">Description: {{ product.description }}</p>
+          <p class="mb-4">Description: {{ product.description }}</p>
           <p class="mb-4">Discount: {{ product.discountPercentage }}%</p>
           <p class="mb-4">Category: {{ product.category }}</p>
           <p class="mb-4">Brand:{{ product.brand }}</p>
           <p class="mb-4">No of Items: {{ product.stock }}</p>
 
-          <v-btn variant="tonal" class="mt-6 " @click="deleteProduct">Delete Product</v-btn>
-
+          <v-btn
+            variant="tonal"
+            class="mt-6"
+            @click="deleteProduct"
+            >Delete Product</v-btn
+          >
         </v-col>
       </v-row>
     </template>
-
   </v-card>
 </template>
 
@@ -83,7 +88,11 @@
   import { computed, onMounted, ref, Ref } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useProductStore } from '../../stores/ProductsStore';
-import { useSnackbarStore, SNACKBAR_TYPE_SUCCESS, SNACKBAR_TYPE_ERROR } from '../../stores/SnackbarStore';
+  import {
+    useSnackbarStore,
+    SNACKBAR_TYPE_SUCCESS,
+    SNACKBAR_TYPE_ERROR,
+  } from '../../stores/SnackbarStore';
 
   const Router = useRouter();
   const route = useRoute();
@@ -101,7 +110,6 @@ import { useSnackbarStore, SNACKBAR_TYPE_SUCCESS, SNACKBAR_TYPE_ERROR } from '..
 
   const snackbarStore = useSnackbarStore();
 
-
   const deleteProduct = async () => {
     if (!product.value || !product.value.id) {
       return;
@@ -112,13 +120,18 @@ import { useSnackbarStore, SNACKBAR_TYPE_SUCCESS, SNACKBAR_TYPE_ERROR } from '..
 
     if (isDeleted) {
       // Show success message in snackbar
-    snackbarStore.toggleSnackbar(SNACKBAR_TYPE_SUCCESS, 'Product deleted successfully');
+      snackbarStore.toggleSnackbar(
+        SNACKBAR_TYPE_SUCCESS,
+        'Product deleted successfully',
+      );
       // Navigate back to the product list upon successful deletion
       Router.push('/resources');
-      console.log(`item deleted ${productId}`)
+      console.log(`item deleted ${productId}`);
     } else {
-      snackbarStore.toggleSnackbar(SNACKBAR_TYPE_ERROR, 'Failed to delete product');
-
+      snackbarStore.toggleSnackbar(
+        SNACKBAR_TYPE_ERROR,
+        'Failed to delete product',
+      );
     }
   };
 
@@ -130,5 +143,4 @@ import { useSnackbarStore, SNACKBAR_TYPE_SUCCESS, SNACKBAR_TYPE_ERROR } from '..
   });
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

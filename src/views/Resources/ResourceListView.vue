@@ -3,7 +3,7 @@
   import { Ref, ref, onMounted, computed } from 'vue';
   import { useProductStore } from '../../stores/ProductsStore';
   import { useRouter } from 'vue-router';
-  import { debounce } from 'vue-debounce'
+  import { debounce } from 'vue-debounce';
 
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
@@ -62,16 +62,15 @@
 
   const getUniqueCategories = () => {
     // Use Set to store unique categories
-  const categories = new Set(); 
-  if (store.products.products) {
-    store.products.products.forEach((product) =>
-      categories.add(product.category),
-    );
-  }
-  // Convert Set to array
-  return Array.from(categories); 
-};
-
+    const categories = new Set();
+    if (store.products.products) {
+      store.products.products.forEach((product) =>
+        categories.add(product.category),
+      );
+    }
+    // Convert Set to array
+    return Array.from(categories);
+  };
 </script>
 
 <template>
@@ -97,7 +96,11 @@
       </v-col>
     </v-row>
     <v-row class="pb-4 px-lg-14 px-md-10 px-6">
-      <v-col cols="12" sm="8" lg="4">
+      <v-col
+        cols="12"
+        sm="8"
+        lg="4"
+      >
         <v-text-field
           v-model="searchQuery"
           v-devounce:3000ms="debouncedSearch"
@@ -106,7 +109,11 @@
           dense
         ></v-text-field>
       </v-col>
-      <v-col cols="12" sm="4" lg="2">
+      <v-col
+        cols="12"
+        sm="4"
+        lg="2"
+      >
         <v-select
           v-model="selectedCategory"
           :items="getUniqueCategories()"
@@ -138,15 +145,22 @@
           lg="3"
           @click="viewProductDetails(product.id)"
         >
-          <v-card hover>
+          <v-card
+            hover
+            class="px-3 box-border"
+          >
             <v-img
               :src="product.thumbnail"
               height="200px"
             />
-            <div class="text-title">{{ product.title }}</div>
-            <v-card-subtitle>Brand: {{ product.brand }}</v-card-subtitle>
-            <v-card-text>Price: ${{ product.price }}</v-card-text>
-            <v-card-actions  >
+            <v-card-title class="text-left">{{ product.title }}</v-card-title>
+            <v-card-subtitle class="text-left"
+              >Brand: {{ product.brand }}</v-card-subtitle
+            >
+            <v-card-text class="text-left"
+              >Price: ${{ product.price }}</v-card-text
+            >
+            <v-card-actions>
               <v-btn
                 variant="tonal"
                 @click="viewProductDetails(product.id)"
