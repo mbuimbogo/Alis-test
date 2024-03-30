@@ -36,7 +36,7 @@
   };
 
   const filteredProducts = computed(() => {
-    if (!store.products.products) {
+    if (!store.products) {
       return [];
     }
 
@@ -45,7 +45,7 @@
     const endIndex = startIndex + itemsPerPage;
 
     // Filter by search query and selected category
-    return store.products.products
+    return store.products
       .filter(
         (product) =>
           (product.title.toLowerCase().includes(query) ||
@@ -63,14 +63,15 @@
   const getUniqueCategories = () => {
     // Use Set to store unique categories
     const categories = new Set();
-    if (store.products.products) {
-      store.products.products.forEach((product) =>
+    if (store.products) {
+      store.products.forEach((product) =>
         categories.add(product.category),
       );
     }
     // Convert Set to array
     return Array.from(categories);
   };
+
 </script>
 
 <template>
@@ -103,7 +104,6 @@
       >
         <v-text-field
           v-model="searchQuery"
-          v-devounce:3000ms="debouncedSearch"
           label="Search"
           outlined
           dense
@@ -137,7 +137,7 @@
       </template>
       <template v-else>
         <v-col
-          v-for="product in filteredProducts || store.products.products"
+          v-for="product in filteredProducts || store.products"
           :key="product.title"
           cols="12"
           sm="6"
@@ -163,6 +163,7 @@
             <v-card-actions>
               <v-btn
                 variant="tonal"
+                class="px-3"
                 @click="viewProductDetails(product.id)"
                 >View Details</v-btn
               >
@@ -174,11 +175,11 @@
     <!-- Pagination -->
     <v-row
       class="px-lg-14 px-md-10 px-6 justify-center"
-      v-if="store.products.products"
+      v-if="store.products"
     >
       <v-pagination
         v-model="currentPage"
-        :length="Math.ceil(store.products.products.length / itemsPerPage)"
+        :length="Math.ceil(store.products.length / itemsPerPage)"
         @input="changePage"
         color="primary"
         variant="tonal"
