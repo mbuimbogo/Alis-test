@@ -133,17 +133,17 @@
           lg="3"
           @click="viewProductDetails(product.id)"
         >
-          <v-card>
+          <v-card hover>
             <v-img
               :src="product.thumbnail"
               height="200px"
             />
             <div class="text-title">{{ product.title }}</div>
-            <v-card-subtitle>{{ product.brand }}</v-card-subtitle>
-            <v-card-text>${{ product.price }}</v-card-text>
-            <v-card-actions>
+            <v-card-subtitle>Brand: {{ product.brand }}</v-card-subtitle>
+            <v-card-text>Price: ${{ product.price }}</v-card-text>
+            <v-card-actions  >
               <v-btn
-                text="Close"
+                variant="tonal"
                 @click="viewProductDetails(product.id)"
                 >View Details</v-btn
               >
@@ -162,6 +162,7 @@
         :length="Math.ceil(store.products.products.length / itemsPerPage)"
         @input="changePage"
         color="primary"
+        variant="tonal"
       ></v-pagination>
     </v-row>
   </v-container>

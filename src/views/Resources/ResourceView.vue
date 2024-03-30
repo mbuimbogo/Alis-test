@@ -64,16 +64,17 @@
       ></v-rating>
           <h1 class="mb-4">{{ product.title }}</h1> 
 
-          <p class="mb-4">{{ product.description }}</p>
+          <p class="mb-4">Description: {{ product.description }}</p>
           <p class="mb-4">Discount: {{ product.discountPercentage }}%</p>
           <p class="mb-4">Category: {{ product.category }}</p>
           <p class="mb-4">Brand:{{ product.brand }}</p>
           <p class="mb-4">No of Items: {{ product.stock }}</p>
 
+          <v-btn variant="tonal" class="mt-6 " @click="deleteProduct">Delete Product</v-btn>
+
         </v-col>
       </v-row>
     </template>
-    <v-btn @click="deleteProduct">Delete Product</v-btn>
 
   </v-container>
 </template>
