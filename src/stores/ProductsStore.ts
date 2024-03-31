@@ -116,7 +116,7 @@ export const useProductStore = defineStore('products', () => {
     isLoading.value = true;
     try {
       const response = await fetch(
-        `https://dummyjson.com/products/${productId}`,
+        `${baseURL}/${productId}`,
       );
       if (!response.ok) {
         throw new Error('Failed to fetch product');
@@ -128,6 +128,24 @@ export const useProductStore = defineStore('products', () => {
       return product;
     } catch (err) {
       console.error(`Failed to fetch product with ID: ${productId}`, err);
+      setError(err);
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const searchProducts = async (query) => {
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const response = await fetch(`${baseURL}/search?q=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        throw new Error('Failed to search products');
+      }
+
+      const responseJson = await response.json();
+      products.value = responseJson.products;
+    } catch (err) {
       setError(err);
     } finally {
       isLoading.value = false;
@@ -149,5 +167,6 @@ export const useProductStore = defineStore('products', () => {
     deleteProduct,
     getProductById,
     addProduct,
+    searchProducts,
   };
 });
