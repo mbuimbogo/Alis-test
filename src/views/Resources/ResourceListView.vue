@@ -147,7 +147,7 @@
         >
           <v-card
             hover
-            class="px-3 box-border"
+            class="px-3 py-2 box-border"
           >
             <v-img
               :src="product.thumbnail"
