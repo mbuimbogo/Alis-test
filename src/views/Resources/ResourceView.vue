@@ -8,22 +8,25 @@
     SNACKBAR_TYPE_ERROR,
   } from '../../stores/SnackbarStore';
 
+  //store refs
+
   const Router = useRouter();
   const route = useRoute();
   const store = useProductStore();
   const product = ref(null);
   const loading: Ref<boolean> = ref(true);
   const deleteConfirmationDialog: Ref<boolean> = ref(false);
+  const snackbarStore = useSnackbarStore();
 
   const resourceTitle = computed(() => {
     return `Resource ${Router.currentRoute.value.params.resourceId}`;
   });
 
+  //functions
+
   function goBack() {
     Router.back();
   }
-
-  const snackbarStore = useSnackbarStore();
 
   const deleteProduct = async () => {
     if (!product.value || !product.value.id) {
@@ -56,14 +59,16 @@
 
   // Method to handle the actual deletion after confirmation
   async function handleDeleteConfirmation() {
-    deleteConfirmationDialog.value = false; // Close the dialog
-    await deleteProduct(); // Call your existing deleteProduct method
+    // Close the dialog
+    deleteConfirmationDialog.value = false;
+    await deleteProduct();
   }
 
+  //onMounted
   onMounted(async () => {
     loading.value = true;
     setTimeout(() => (loading.value = false), 3000);
-    const productId = route.params.resourceId;
+    const productId = +route.params.resourceId;
     product.value = await store.getProductById(productId);
   });
 </script>

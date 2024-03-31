@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 
-interface Product {
+export interface Product {
   id?: number;
   title: string;
   description: string;
@@ -17,9 +17,9 @@ interface Product {
 
 export const useProductStore = defineStore('products', () => {
   // State
-  const products = ref([]);
-  const isLoading = ref(false);
-  const error = ref(null);
+  const products: Ref<Product[]> = ref([]);
+  const isLoading: Ref<boolean> = ref(false);
+  const error: Ref<string | null> = ref(null);
   const baseURL = 'https://dummyjson.com/products'
 
   // Actions
@@ -69,7 +69,7 @@ export const useProductStore = defineStore('products', () => {
     }
   };
 
-  const deleteProduct = async (productId) => {
+  const deleteProduct = async (productId: number) => {
     if (!productId) {
       throw new Error('Product ID is required');
     }
@@ -101,7 +101,7 @@ export const useProductStore = defineStore('products', () => {
     }
   };
 
-  const getProductById = async (productId) => {
+  const getProductById = async (productId: number) => {
     if (!productId) {
       throw new Error('Product ID is required');
     }
@@ -134,7 +134,7 @@ export const useProductStore = defineStore('products', () => {
     }
   };
 
-  const searchProducts = async (query) => {
+  const searchProducts = async (query: string) => {
     isLoading.value = true;
     error.value = null;
     try {
@@ -153,7 +153,7 @@ export const useProductStore = defineStore('products', () => {
   };
 
   // Helpers
-  const setError = (err) => {
+  const setError = (err: string) => {
     error.value = err;
     console.error('Error:', err);
   };
@@ -170,3 +170,4 @@ export const useProductStore = defineStore('products', () => {
     searchProducts,
   };
 });
+

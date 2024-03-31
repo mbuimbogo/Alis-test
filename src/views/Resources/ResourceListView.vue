@@ -8,7 +8,8 @@
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
   import { watch } from 'vue';
-
+   
+  // refs
   const store = useProductStore();
   const router = useRouter();
   const searchQuery = ref('');
@@ -34,7 +35,7 @@
   const searchProducts = (value: string) => {
     searchQuery.value = value;
   };
-  const viewProductDetails = (productId) => {
+  const viewProductDetails = (productId: number) => {
     router.push({ name: 'Resource', params: { resourceId: productId } });
   };
 
@@ -58,6 +59,8 @@
       )
       .slice(startIndex, endIndex);
   });
+
+  //methods
 
   const changePage = (page: number) => {
     currentPage.value = page;

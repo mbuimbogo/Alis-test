@@ -26,8 +26,11 @@
   const productStore = useProductStore();
   const snackbarStore = useSnackbarStore();
 
+  // Ref Props
+  const dialog: Ref<boolean> = ref(false);
   const imageUrlInput = ref('');
 
+  //Functions
   // Function to add an image URL to the images array
   const addImage = () => {
     if (imageUrlInput.value.trim() !== '') {
@@ -106,23 +109,6 @@
       images: [],
     };
   };
-  // Component Imports
-
-  // Define Stores
-
-  // Define Emits
-
-  // Props
-
-  // Ref Props
-  const dialog: Ref<boolean> = ref(false);
-
-  // Watchers
-
-  // Functions
-
-  // Functions
-  // onMounted(() => {})
 </script>
 
 <template>
