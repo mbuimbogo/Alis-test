@@ -23,7 +23,7 @@
   });
 
   const debouncedSearch = debounce((value: string) => {
-    searchQuery.value = value;
+    searchProducts(value);
   }, 3000);
 
   // Watch for changes in the search query and debounce updates
@@ -31,6 +31,9 @@
     debouncedSearch(newValue);
   });
 
+  const searchProducts = (value: string) => {
+    searchQuery.value = value;
+  };
   const viewProductDetails = (productId) => {
     router.push({ name: 'Resource', params: { resourceId: productId } });
   };
@@ -64,14 +67,11 @@
     // Use Set to store unique categories
     const categories = new Set();
     if (store.products) {
-      store.products.forEach((product) =>
-        categories.add(product.category),
-      );
+      store.products.forEach((product) => categories.add(product.category));
     }
     // Convert Set to array
     return Array.from(categories);
   };
-
 </script>
 
 <template>
@@ -123,9 +123,6 @@
         ></v-select>
       </v-col>
     </v-row>
-    <!-- <v-row class="pb-4 px-lg-14 px-md-10 px-6">
-      
-    </v-row> -->
 
     <v-row class="overflow-auto px-lg-14 px-md-10 px-16 text-center">
       <template v-if="store.isLoading">
@@ -136,50 +133,108 @@
         />
       </template>
       <template v-else>
-        <v-col
-          v-for="product in filteredProducts || store.products"
-          :key="product.title"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-          @click="viewProductDetails(product.id)"
-        >
-          <v-card
-            hover
-            class="px-3 py-2 box-border"
+        <!-- Filtered Products -->
+        <template v-if="filteredProducts.length > 0">
+          <v-col
+            v-for="product in filteredProducts"
+            :key="product.id"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+            @click="viewProductDetails(product.id)"
           >
-            <v-img
-              :src="product.thumbnail"
-              height="200px"
-            />
-            <v-card-title class="text-left">{{ product.title }}</v-card-title>
-            <v-card-subtitle class="text-left"
-              >Brand: {{ product.brand }}</v-card-subtitle
+            <v-card
+              hover
+              class="px-3 py-2 box-border"
             >
-            <v-card-text class="text-left"
-              >Price: ${{ product.price }}</v-card-text
-            >
-            <v-card-actions>
-              <v-btn
-                variant="tonal"
-                class="px-3"
-                @click="viewProductDetails(product.id)"
-                >View Details</v-btn
+              <v-img
+                :src="product.thumbnail"
+                height="200px"
+              />
+              <v-card-title class="text-left">{{ product.title }}</v-card-title>
+              <v-card-subtitle class="text-left"
+                >Brand: {{ product.brand }}</v-card-subtitle
               >
-            </v-card-actions>
-          </v-card>
-        </v-col>
+              <v-card-text class="text-left"
+                >Price: ${{ product.price }}</v-card-text
+              >
+              <v-card-actions>
+                <v-btn
+                  variant="tonal"
+                  class="px-3"
+                  @click="viewProductDetails(product.id)"
+                  >View Details</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </template>
+        <template v-else-if="filteredProducts.length === 0">
+          <v-row class="px-lg-14 px-md-10 px-6 justify-center">
+            <v-col cols="12">
+              <div class="text-center">
+                The product with the term "{{ searchQuery }}" does not exist.
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+
+        <template v-else>
+          <v-col
+            v-for="product in store.products"
+            :key="product.id"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+            @click="viewProductDetails(product.id)"
+          >
+            <v-card
+              hover
+              class="px-3 py-2 box-border"
+            >
+              <v-img
+                :src="product.thumbnail"
+                height="200px"
+              />
+              <v-card-title class="text-left">{{ product.title }}</v-card-title>
+              <v-card-subtitle class="text-left"
+                >Brand: {{ product.brand }}</v-card-subtitle
+              >
+              <v-card-text class="text-left"
+                >Price: ${{ product.price }}</v-card-text
+              >
+              <v-card-actions>
+                <v-btn
+                  variant="tonal"
+                  class="px-3"
+                  @click="viewProductDetails(product.id)"
+                  >View Details</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </template>
       </template>
     </v-row>
     <!-- Pagination -->
     <v-row
       class="px-lg-14 px-md-10 px-6 justify-center"
-      v-if="store.products"
+      v-if="
+        filteredProducts.length > itemsPerPage ||
+        store.products.length > itemsPerPage
+      "
     >
       <v-pagination
         v-model="currentPage"
-        :length="Math.ceil(store.products.length / itemsPerPage)"
+        :length="
+          Math.ceil(
+            filteredProducts.length > 0
+              ? filteredProducts.length
+              : store.products.length / itemsPerPage,
+          )
+        "
         @input="changePage"
         color="primary"
         variant="tonal"
