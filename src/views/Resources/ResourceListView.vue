@@ -7,7 +7,7 @@
 
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
-  import ProductCard from '../Resources/ProductCard.vue';
+  import ResourceCard from '../Resources/ResourceCard.vue';
   import { watch } from 'vue';
 
   // refs
@@ -139,7 +139,7 @@
       <template v-else>
         <!-- Filtered Products -->
         <template v-if="filteredProducts.length > 0">
-          <ProductCard
+          <ResourceCard
             v-for="product in filteredProducts"
             :key="product.id"
             :product="product"
@@ -157,7 +157,7 @@
         </template>
 
         <template v-else>
-          <ProductCard
+          <ResourceCard
             v-for="product in store.products"
             :key="product.id"
             :product="product"

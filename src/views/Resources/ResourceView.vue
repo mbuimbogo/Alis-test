@@ -122,7 +122,7 @@
               <v-img
                 :src="image"
                 class="mx-auto d-block"
-                aspect-ratio="16/9"
+                aspect-ratio="16/4"
               ></v-img>
             </v-carousel-item>
           </v-carousel>
@@ -140,11 +140,27 @@
           ></v-rating>
           <h1 class="mb-4">{{ product.title }}</h1>
 
-          <p class="mb-4">Description: {{ product.description }}</p>
-          <p class="mb-4">Discount: {{ product.discountPercentage }}%</p>
-          <p class="mb-4">Category: {{ product.category }}</p>
-          <p class="mb-4">Brand:{{ product.brand }}</p>
-          <p class="mb-4">No of Items: {{ product.stock }}</p>
+          <p class="mb-4 font-weight-bold text-md-h6">
+            Description:
+            <span class="font-weight-regular">{{ product.description }}</span>
+          </p>
+          <p class="mb-4 font-weight-bold text-md-h6">
+            Discount:
+            <span class="font-weight-regular"
+              >{{ product.discountPercentage }}%</span
+            >
+          </p>
+          <p class="mb-4 font-weight-bold text-md-h6">
+            Category:
+            <span class="font-weight-regular"> {{ product.category }}</span>
+          </p>
+          <p class="mb-4 font-weight-bold text-md-h6">
+            Brand: <span class="font-weight-regular"> {{ product.brand }}</span>
+          </p>
+          <p class="mb-4 font-weight-bold text-md-h6">
+            No of Items:
+            <span class="font-weight-regular">{{ product.stock }}</span>
+          </p>
 
           <v-btn
             variant="tonal"
@@ -162,8 +178,7 @@
         <v-card>
           <v-card-title class="text-h5">Confirm Deletion</v-card-title>
           <v-card-text>
-            Delete this product? This action cannot be
-            undone.
+            Delete this product? This action cannot be undone.
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
