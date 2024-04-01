@@ -30,8 +30,8 @@
   const dialog: Ref<boolean> = ref(false);
   const imageUrlInput = ref('');
 
-  //Functions
-  // Function to add an image URL to the images array
+  //methods
+  // methods to add an image URL to the images array
   const addImage = () => {
     if (imageUrlInput.value.trim() !== '') {
       productForm.value.images.push(imageUrlInput.value);
@@ -120,8 +120,8 @@
     <v-dialog
       v-model="dialog"
       activator="parent"
-      max-width="600px"     
-       class="pb-4"
+      max-width="600px"
+      class="pb-4"
     >
       <v-card class="pt-2 px-2">
         <v-card-title>Create a new Resource</v-card-title>
@@ -185,6 +185,9 @@
               <v-chip
                 close
                 @click:close="removeImage(index)"
+                class="ma-2 "
+                color="primary"
+                closable
               >
                 {{ image }}
               </v-chip>

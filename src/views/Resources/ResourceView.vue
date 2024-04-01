@@ -66,7 +66,7 @@
   //onMounted
   onMounted(async () => {
     loading.value = true;
-    setTimeout(() => (loading.value = false), 3000);
+    setTimeout(() => (loading.value = false), 1000);
     const productId = +route.params.resourceId;
     product.value = await store.getProductById(productId);
   });

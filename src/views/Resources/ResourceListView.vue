@@ -7,6 +7,7 @@
 
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
+  import ProductCard from '../Resources/ProductCard.vue';
   import { watch } from 'vue';
 
   // refs
@@ -80,10 +81,10 @@
 <template>
   <v-container
     fluid
-    class="d-flex flex-column justify-space-between"
+    class="d-flex flex-column justify-space-between mt-4"
   >
     <v-row
-      class="w-100 pb-4 px-lg-14 px-md-10 px-6"
+      class="w-100 pb-4 px-lg-14 px-md-10"
       dense
     >
       <v-col
@@ -99,7 +100,7 @@
         <ResourceCreateView></ResourceCreateView>
       </v-col>
     </v-row>
-    <v-row class="pb-4 px-lg-14 px-md-10 px-6">
+    <v-row class="pb-4 px-lg-14 px-md-10">
       <v-col
         cols="12"
         sm="8"
@@ -127,7 +128,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="overflow-auto px-lg-14 px-md-10 px-16 text-center">
+    <v-row class="overflow-auto px-lg-14 px-md-10 text-center">
       <template v-if="store.isLoading">
         <v-progress-linear
           class="w-100"
@@ -138,40 +139,12 @@
       <template v-else>
         <!-- Filtered Products -->
         <template v-if="filteredProducts.length > 0">
-          <v-col
+          <ProductCard
             v-for="product in filteredProducts"
             :key="product.id"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
+            :product="product"
             @click="viewProductDetails(product.id)"
-          >
-            <v-card
-              hover
-              class="px-3 py-2 box-border"
-            >
-              <v-img
-                :src="product.thumbnail"
-                height="200px"
-              />
-              <v-card-title class="text-left">{{ product.title }}</v-card-title>
-              <v-card-subtitle class="text-left"
-                >Brand: {{ product.brand }}</v-card-subtitle
-              >
-              <v-card-text class="text-left"
-                >Price: ${{ product.price }}</v-card-text
-              >
-              <v-card-actions>
-                <v-btn
-                  variant="tonal"
-                  class="px-3"
-                  @click="viewProductDetails(product.id)"
-                  >View Details</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-col>
+          />
         </template>
         <template v-else-if="filteredProducts.length === 0">
           <v-row class="px-lg-14 px-md-10 px-6 justify-center">
@@ -184,40 +157,12 @@
         </template>
 
         <template v-else>
-          <v-col
+          <ProductCard
             v-for="product in store.products"
             :key="product.id"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
+            :product="product"
             @click="viewProductDetails(product.id)"
-          >
-            <v-card
-              hover
-              class="px-3 py-2 box-border"
-            >
-              <v-img
-                :src="product.thumbnail"
-                height="200px"
-              />
-              <v-card-title class="text-left">{{ product.title }}</v-card-title>
-              <v-card-subtitle class="text-left"
-                >Brand: {{ product.brand }}</v-card-subtitle
-              >
-              <v-card-text class="text-left"
-                >Price: ${{ product.price }}</v-card-text
-              >
-              <v-card-actions>
-                <v-btn
-                  variant="tonal"
-                  class="px-3"
-                  @click="viewProductDetails(product.id)"
-                  >View Details</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-col>
+          />
         </template>
       </template>
     </v-row>
@@ -235,13 +180,14 @@
         @input="changePage"
         color="primary"
         variant="tonal"
+        class="mt-8"
       ></v-pagination>
     </v-row>
   </v-container>
 </template>
 
 <style scoped lang="scss">
-.v-container {
-  min-height: 100vh;
-}
+  .v-container {
+    height: 100vh;
+  }
 </style>
