@@ -120,8 +120,8 @@
     <v-dialog
       v-model="dialog"
       activator="parent"
-      width="30%"
-      class="pb-4"
+      max-width="600px"     
+       class="pb-4"
     >
       <v-card class="pt-2 px-2">
         <v-card-title>Create a new Resource</v-card-title>
