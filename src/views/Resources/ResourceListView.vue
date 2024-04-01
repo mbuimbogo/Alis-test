@@ -80,7 +80,7 @@
 <template>
   <v-container
     fluid
-    class="h-100 overflow-auto"
+    class="d-flex flex-column justify-space-between"
   >
     <v-row
       class="w-100 pb-4 px-lg-14 px-md-10 px-6"
@@ -223,7 +223,7 @@
     </v-row>
     <!-- Pagination -->
     <v-row
-      class="px-lg-14 px-md-10 px-6 justify-center"
+      class="px-lg-14 px-md-10 px-6 justify-center mt-auto"
       v-if="
         filteredProducts.length > itemsPerPage ||
         store.products.length > itemsPerPage
@@ -240,4 +240,8 @@
   </v-container>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.v-container {
+  min-height: 100vh;
+}
+</style>
