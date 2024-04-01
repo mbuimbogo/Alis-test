@@ -8,14 +8,14 @@
   // Component Imports
   import ResourceCreateView from '../Resources/ResourceCreateView.vue';
   import { watch } from 'vue';
-   
+
   // refs
   const store = useProductStore();
   const router = useRouter();
   const searchQuery = ref('');
   const currentPage = ref(1);
-  const itemsPerPage = 8;
   const selectedCategory = ref('');
+  const itemsPerPage = 8;
 
   // onMounted
   // fetch products on component mount
@@ -67,7 +67,7 @@
   };
 
   const getUniqueCategories = () => {
-    // Use Set to store unique categories
+    // store unique categories
     const categories = new Set();
     if (store.products) {
       store.products.forEach((product) => categories.add(product.category));
@@ -231,13 +231,7 @@
     >
       <v-pagination
         v-model="currentPage"
-        :length="
-          Math.ceil(
-            filteredProducts.length > 0
-              ? filteredProducts.length
-              : store.products.length / itemsPerPage,
-          )
-        "
+        :length="Math.ceil(store.products.length / itemsPerPage)"
         @input="changePage"
         color="primary"
         variant="tonal"

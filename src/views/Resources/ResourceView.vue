@@ -44,7 +44,6 @@
       );
       // Navigate back to the product list upon successful deletion
       Router.push('/resources');
-      console.log(`item deleted ${productId}`);
     } else {
       snackbarStore.toggleSnackbar(
         SNACKBAR_TYPE_ERROR,
@@ -57,7 +56,7 @@
     deleteConfirmationDialog.value = true;
   }
 
-  // Method to handle the actual deletion after confirmation
+  // handle the deletion after confirmation
   async function handleDeleteConfirmation() {
     // Close the dialog
     deleteConfirmationDialog.value = false;
@@ -163,7 +162,7 @@
         <v-card>
           <v-card-title class="text-h5">Confirm Deletion</v-card-title>
           <v-card-text>
-            Are you sure you want to delete this product? This action cannot be
+            Delete this product? This action cannot be
             undone.
           </v-card-text>
           <v-card-actions>

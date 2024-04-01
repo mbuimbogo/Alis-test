@@ -158,7 +158,7 @@ export const useProductStore = defineStore('products', () => {
     console.error('Error:', err);
   };
 
-  // Return the state, actions, and any other computed properties or getters
+  // Return the state, actions
   return {
     products,
     isLoading,
