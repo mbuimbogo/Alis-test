@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, type Ref } from 'vue';
+import { SNACKBAR_TYPE_ERROR, useSnackbarStore } from './SnackbarStore';
 
 export interface Product {
   id?: number;
@@ -21,6 +22,8 @@ export const useProductStore = defineStore('products', () => {
   const isLoading: Ref<boolean> = ref(false);
   const error: Ref<string | null> = ref(null);
   const baseURL = 'https://dummyjson.com/products'
+  const snackbarStore = useSnackbarStore();
+
 
   // Actions
   const fetchProducts = async () => {
@@ -153,9 +156,14 @@ export const useProductStore = defineStore('products', () => {
   };
 
   // Helpers
+  
   const setError = (err: string) => {
     error.value = err;
-    console.error('Error:', err);
+    // console.error('Error:', err);
+    snackbarStore.toggleSnackbar(
+      SNACKBAR_TYPE_ERROR,
+      err,
+    );
   };
 
   // Return the state, actions
