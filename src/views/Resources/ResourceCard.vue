@@ -18,7 +18,7 @@ const emitClick = () => {
 
 
 <template>
-    <v-col cols="12" sm="6" md="4" lg="3">
+    <v-col cols="12" sm="6" md="4" lg="3" class="my-16">
       <v-card hover class="px-2 py-2 box-border">
         <v-img :src="product.thumbnail" height="200px" />
         <v-card-title class="text-left">{{ product.title }}</v-card-title>

@@ -22,7 +22,7 @@
     return `Resource ${Router.currentRoute.value.params.resourceId}`;
   });
 
-  //functions
+  //methods
 
   function goBack() {
     Router.back();
