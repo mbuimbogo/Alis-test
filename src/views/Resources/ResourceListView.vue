@@ -26,7 +26,7 @@
 
   const debouncedSearch = debounce((value: string) => {
     searchProducts(value);
-  }, 3000);
+  },300);
 
   // Watch for changes in the search query and debounce updates
   watch(searchQuery, (newValue: string) => {
@@ -34,7 +34,9 @@
   });
 
   const searchProducts = (value: string) => {
-    searchQuery.value = value;
+    // searchQuery.value = value; --client side filter functionality
+    // API filter
+    store.searchProducts(value)
   };
   const viewProductDetails = (productId: number) => {
     router.push({ name: 'Resource', params: { resourceId: productId } });
@@ -73,7 +75,6 @@
     if (store.products) {
       store.products.forEach((product) => categories.add(product.category));
     }
-    // Convert Set to array
     return Array.from(categories);
   };
 </script>
@@ -81,7 +82,7 @@
 <template>
   <v-container
     fluid
-    class="d-flex flex-column justify-space-between mt-4"
+    class=" mt-4" 
   >
     <v-row
       class="w-100 pb-4 px-lg-14 px-md-10"
@@ -149,7 +150,7 @@
         <template v-else-if="filteredProducts.length === 0">
           <v-row class="px-lg-14 px-md-10 px-6 justify-center">
             <v-col cols="12">
-              <div class="text-center">
+              <div class="text-center text-md-h6 font-weight-regular my-16">
                 The product with the term "{{ searchQuery }}" does not exist.
               </div>
             </v-col>
@@ -180,7 +181,7 @@
         @input="changePage"
         color="primary"
         variant="tonal"
-        class="mt-8"
+        class="my-8"
       ></v-pagination>
     </v-row>
   </v-container>
